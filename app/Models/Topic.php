@@ -25,6 +25,8 @@ class Topic extends Model
 
     public $incrementing = false;
 
+    protected $guarded = [];
+
     public function subscribers(): HasMany
     {
         return $this->hasMany(Subscriber::class);
