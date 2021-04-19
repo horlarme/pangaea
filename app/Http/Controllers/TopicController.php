@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Topic\Subscribe as SubscribeRequest;
+use App\Models\Subscriber;
 use App\Models\Topic;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
 class TopicController extends Controller
@@ -31,5 +34,23 @@ class TopicController extends Controller
             'url' => $request->get('url'),
             'topic' => $topic->name
         ]);
+    }
+
+    public function publish($topic, Request $request)
+    {
+        /**
+         * The Topic Model.
+         *
+         * @var Topic $topic
+         */
+        $topic = Topic::whereName($topic)->first();
+
+        if(!$topic) {
+            return response()->json('Topic Not Found', Response::HTTP_NOT_FOUND);
+        }
+
+        $topic->subscribers()->cursor()->each(fn(Subscriber $subscriber) => $subscriber->publish($request->all()));
+
+        return response()->json(['message' => 'Message Published Successfully', 'topic' => $topic->name]);
     }
 }

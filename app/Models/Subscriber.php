@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Class Subscriber
@@ -29,5 +30,19 @@ class Subscriber extends Model
     public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);
+    }
+
+    /**
+     * Send an HTTP POST request to the subscribers' URL.
+     *
+     * @param array $all
+     * @return void
+     */
+    public function publish(array $all)
+    {
+        Http::post($this->url, [
+            'topic' => $this->topic->name,
+            'data' => (array) $all
+        ]);
     }
 }
