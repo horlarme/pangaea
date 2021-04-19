@@ -40,6 +40,7 @@ class Subscriber extends Model
      */
     public function publish(array $all)
     {
+        // Todo: Move to a queue.
         Http::post($this->url, [
             'topic' => $this->topic->name,
             'data' => (array) $all

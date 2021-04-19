@@ -36,7 +36,14 @@ class TopicController extends Controller
         ]);
     }
 
-    public function publish($topic, Request $request)
+    /**
+     * Publish a message to a topic subscribers.
+     *
+     * @param $topic
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function publish($topic, Request $request): JsonResponse
     {
         /**
          * The Topic Model.
@@ -45,7 +52,7 @@ class TopicController extends Controller
          */
         $topic = Topic::whereName($topic)->first();
 
-        if(!$topic) {
+        if (!$topic) {
             return response()->json('Topic Not Found', Response::HTTP_NOT_FOUND);
         }
 
