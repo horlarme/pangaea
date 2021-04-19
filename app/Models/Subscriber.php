@@ -5,28 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * Class Topic
+ * Class Subscriber
  * @package App\Models
  * @property string $id
- * @property string $name
+ * @property string $url
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Subscriber[] $subscribers
+ * @property Topic $topic
  *
  * @mixin Builder
  */
-class Topic extends Model
+class Subscriber extends Model
 {
     use HasFactory;
 
     public $incrementing = false;
 
-    public function subscribers(): HasMany
+    public function topic(): BelongsTo
     {
-        return $this->hasMany(Subscriber::class);
+        return $this->belongsTo(Topic::class);
     }
 }
